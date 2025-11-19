@@ -1,0 +1,132 @@
+---
+title: "Introduction to E-Business Analytics"
+subtitle: "Performance Metrics Report"
+author: "Nemo Menzies--657489662"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Executive Summary {-}
+
+Some of the key findings in this performance metrics report were: understanding the data in terms of what it means and why it is important, relationships of the metrics via plot points and trend lines, and how it can be interpreted. These are all things that help companies better understand what is being demonstrated in their business, and guide them to what the next steps might be to seek improvements.
+
+## Question 1
+
+```{r}
+# Create website performance dataset with business terminology
+webperfo <- data.frame(
+  engagement = airquality$Temp,
+  performance = airquality$Ozone,
+  server_load = airquality$Wind
+)
+```
+
+### Q 1.a
+
+There are 3 columns of data with the titles: engagement, performance, and server_load. The first few rows are shown so there aren't several lines of data that appear.
+
+```{r}
+head(webperfo)
+```
+
+### Q 1.b
+
+Performance has a missing value for 37 points of data. The min-max portion shows that the variability goes from 56 to 97.
+
+```{r}
+summary(webperfo)
+```
+
+### Q 1.c
+
+The number is important since it can show the time frame of what they are looking at (so 5 months in this example), more data can help with recognizing patterns and make better decisions to improve desired catagories.
+
+```{r}
+nrow(webperfo)
+```
+
+### Q 1.d
+
+Here the max engagement is around 18 higher than the median.
+
+```{r}
+max(webperfo$engagement)
+```
+
+### Q 1.e
+
+Because there were NA values in the performance data, not the engagement area, which is why na.rm was added here.
+
+```{r}
+max(webperfo$performance, na.rm = TRUE)
+```
+
+## Question 2
+
+### Q 2.a
+
+The correlation seems to be trending upward, however, it's hard to tell what is going on due to a lack of labels, context, and a trendline to better demonstrate what is happening.
+
+```{r}
+plot(webperfo$engagement, webperfo$performance)
+```
+
+### Q 2.b 
+
+Now with a title and axis labels, there is a better understanding of what the graph represents, though still a little cluttered looking.
+
+```{r}
+plot(x = webperfo$engagement, y = webperfo$performance,
+     main = "User Engagement vs Website Performance",
+     xlab = "Daily User Engagement Score", 
+     ylab = "Website Performance Score")
+```
+
+### Q 2.c
+
+As the engagement score increases, the website performance score increases.
+
+```{r}
+plot(x = webperfo$engagement, y = webperfo$performance,
+     main = "User Engagement vs Website Performance",
+     xlab = "Daily User Engagement Score", 
+     ylab = "Website Performance Score",
+     pch = 16, col = "blue")
+```
+
+### Q 2.d
+
+The trend line shows the overall relationship between the two variables. So here as the engagement score increases, the performance score increases as well.
+
+```{r}
+plot(x = webperfo$engagement, y = webperfo$performance,
+     main = "User Engagement vs Website Performance",
+     xlab = "Daily User Engagement Score", 
+     ylab = "Website Performance Score",
+     pch = 16, col = "darkgrey")
+
+abline(lm(performance ~ engagement, data = webperfo), 
+       col = "red", lwd = 2)
+```
+
+## Question 3
+
+### Q 3.a
+
+The correlation coefficient shows the strength and direction of the trend line relative the variables. This graph has a moderate relationship.
+
+```{r}
+cor(webperfo$engagement, webperfo$performance, use = "complete.obs")
+```
+
+### Q 3.b
+
+As engagement increases, the website score increases as well. This would be positive feedback of an e-business manager, meaning they should continue similar engagement strategies to continue increasing the website performance.
